@@ -10,8 +10,7 @@ jobs:
       matrix:
         arch:
           - x86_64
-          - mips_24kc
-          - mipsel_24kc
+          - aarch64_generic
 
     steps:
       - name: Checkout
