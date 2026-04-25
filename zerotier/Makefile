@@ -46,10 +46,12 @@ MAKE_FLAGS += ZT_DEBUG=1
 endif
 
 MAKE_FLAGS += \
-	ZT_EMBEDDED=1 \
+	ZT_EMBEDDED=0 \
 	ZT_SSO_SUPPORTED=0 \
 	DEFS="" \
 	OSTYPE="Linux" \
+    ZT_ENABLE_NETWORK_CONTROLLER=1 \
+	ZT_ENABLE_CLUSTER=1 \
 
 define Build/Compile
 	$(call Build/Compile/Default,one)
