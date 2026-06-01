@@ -24,10 +24,12 @@ PKG_BUILD_FLAGS:=gc-sections
 
 include $(INCLUDE_DIR)/package.mk
 
+DEPENDS:= +libminiupnpc +libnatpmp +libjson-c +libpthread +librt +libstdcpp +libatomic
+
 define Package/zerotier
   SECTION:=net
   CATEGORY:=Network
-  TITLE:=ZeroTier One
+  TITLE:=ZeroTier One (with Controller)
   URL:=https://www.zerotier.com
   DEPENDS:= +libminiupnpc +libnatpmp +libjson-c +libpthread +librt +libstdcpp +libatomic
   SUBMENU:=VPN
@@ -53,24 +55,15 @@ MAKE_FLAGS += \
 	ZT_CONTROLLER=1 \
 	ZT_NONFREE_CONTROLLER=0 \
 	ZT_CONTROLLER_USE_LIBPQ=0 \
-	ZT_OPENTELEMETRY_ENABLED=0
-
-#define Build/Compile
-#	$(call Build/Compile/Default,one)
-#ifeq ($(CONFIG_ZEROTIER_ENABLE_SELFTEST),y)
-#	$(call Build/Compile/Default,selftest)
-#endif
-#endef
+	ZT_OPENTELEMETRY_ENABLED=0 \
+	ZT_USE_REDIS=0 \
+	ZT_RUSTYBITS=0
 
 define Build/Compile
 	$(MAKE) -C $(PKG_BUILD_DIR) \
 		$(MAKE_FLAGS) \
+		ZT_RUSTYBITS=0 \
 		one
-ifeq ($(CONFIG_ZEROTIER_ENABLE_SELFTEST),y)
-	$(MAKE) -C $(PKG_BUILD_DIR) \
-		$(MAKE_FLAGS) \
-		selftest
-endif
 endef
 
 # Make binary smaller
