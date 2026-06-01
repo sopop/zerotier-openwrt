@@ -9,7 +9,7 @@ jobs:
     strategy:
       matrix:
         arch:
-          - x86_64
+          # - x86_64
           - aarch64_generic
 
     steps:
@@ -24,7 +24,16 @@ jobs:
           ARCH: ${{ matrix.arch }}
           PACKAGES: zerotier
           # V: s
-          # V: sc      # 显示 warnings + errors，比较平衡
+          V: sc      # 显示 warnings + errors，比较平衡
+          
+      - name: Show Detailed Build Error
+        if: failure()
+        run: |
+          echo "========== LAST 300 LINES OF BUILD LOG =========="
+          find . -name "build.log" -o -name "*.log" | head -5 | xargs -I {} sh -c 'echo "=== {} ==="; tail -n 300 {} || true'
+          echo "========== END OF LOG =========="
+          echo "If above is empty, try this:"
+          ls -la logs/ 2>/dev/null || echo "No logs/ directory"
 
       - name: Store packages
         uses: actions/upload-artifact@v4
