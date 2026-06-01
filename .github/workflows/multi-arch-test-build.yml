@@ -24,6 +24,7 @@ jobs:
           ARCH: ${{ matrix.arch }}
           PACKAGES: zerotier
           # V: s
+          V: sc      # 显示 warnings + errors，比较平衡
 
       - name: Store packages
         uses: actions/upload-artifact@v4
@@ -32,9 +33,12 @@ jobs:
           path: bin/packages/${{ matrix.arch }}/action/*.apk
 
       - name: Store logs
+        if: always()  # 即使失败也上传日志
         uses: actions/upload-artifact@v4
         with:
           name: ${{ matrix.arch }}-logs
           path: |
             logs/
             PKG-INFO
+            build_dir/target-*/build.log
+            build_dir/target-*/root-*/tmp/
