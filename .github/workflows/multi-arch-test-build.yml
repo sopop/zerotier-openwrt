@@ -23,7 +23,7 @@ jobs:
         env:
           ARCH: ${{ matrix.arch }}
           PACKAGES: zerotier
-          V: s
+          # V: s
 
       - name: Store packages
         uses: actions/upload-artifact@v4
