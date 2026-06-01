@@ -27,10 +27,9 @@ include $(INCLUDE_DIR)/package.mk
 define Package/zerotier
   SECTION:=net
   CATEGORY:=Network
-  #DEPENDS:=+libpthread +libstdcpp +kmod-tun +ip +libminiupnpc +libnatpmp +libatomic
-  DEPENDS:=+libminiupnpc +libnatpmp +libjson-c +libpthread +librt
-  TITLE:=Create flat virtual Ethernet networks of almost unlimited size
+  TITLE:=ZeroTier One
   URL:=https://www.zerotier.com
+  DEPENDS:= +libminiupnpc +libnatpmp +libjson-c +libpthread +librt +libstdcpp +libatomic
   SUBMENU:=VPN
 endef
 
@@ -49,16 +48,12 @@ endif
 MAKE_FLAGS += \
 	ZT_EMBEDDED=1 \
 	ZT_SSO_SUPPORTED=0 \
-	# DEFS="" \
 	OSTYPE="Linux" \
-    ZT_ENABLE_NETWORK_CONTROLLER=1 \
-    ZT_CONTROLLER=1\
-	# 下面这些全部关闭，否则会拉一大堆外部库
+	ZT_ENABLE_NETWORK_CONTROLLER=1 \
+	ZT_CONTROLLER=1 \
 	ZT_NONFREE_CONTROLLER=0 \
 	ZT_CONTROLLER_USE_LIBPQ=0 \
-	ZT_OPENTELEMETRY_ENABLED=0 \
-	ZT_USE_REDIS=0 \
-	ZT_USE_POSTGRES=0
+	ZT_OPENTELEMETRY_ENABLED=0
 
 #define Build/Compile
 #	$(call Build/Compile/Default,one)
