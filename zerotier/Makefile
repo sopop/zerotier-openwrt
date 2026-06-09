@@ -6,12 +6,12 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=zerotier
-PKG_VERSION:=1.16.0
+PKG_VERSION:=1.16.2
 PKG_RELEASE:=1
 
 PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION).tar.gz
 PKG_SOURCE_URL:=https://codeload.github.com/zerotier/ZeroTierOne/tar.gz/$(PKG_VERSION)?
-PKG_HASH:=aa9de313d365bf0efb3871aaa56f2d323a08f46df47b627c4eff4f4203fa7fc5
+PKG_HASH:=2c607f573c6e38815433af289d364a689a203b18b51125f06c4472014d0657f0
 PKG_BUILD_DIR:=$(BUILD_DIR)/ZeroTierOne-$(PKG_VERSION)
 
 PKG_MAINTAINER:=Moritz Warning <moritzwarning@web.de>
@@ -51,18 +51,13 @@ MAKE_FLAGS += \
 	ZT_EMBEDDED=1 \
 	ZT_SSO_SUPPORTED=0 \
 	OSTYPE="Linux" \
-	ZT_ENABLE_NETWORK_CONTROLLER=1 \
-	ZT_NONFREE_CONTROLLER=0 \
-	ZT_CONTROLLER_USE_LIBPQ=0 \
-	ZT_OPENTELEMETRY_ENABLED=0 \
-	ZT_USE_REDIS=0 \
-	ZT_RUSTYBITS=0
+	ZT_ENABLE_NETWORK_CONTROLLER=1
 
 define Build/Compile
-	$(MAKE) -C $(PKG_BUILD_DIR) \
-		$(MAKE_FLAGS) \
-		ZT_RUSTYBITS=0 \
-		one
+	$(call Build/Compile/Default,one)
+ifeq ($(CONFIG_ZEROTIER_ENABLE_SELFTEST),y)
+	$(call Build/Compile/Default,selftest)
+endif
 endef
 
 # Make binary smaller
